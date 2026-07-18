@@ -26,4 +26,10 @@ jobs:
       # exempt from Style/Documentation) only when given tap/formula names, not
       # bare file paths — `brew audit [path ...]` is disabled upstream anyway.
       - run: brew audit --strict --tap="$HOMEBREW_TAP"
-      - run: brew style "$HOMEBREW_TAP"
+      # `brew style "$HOMEBREW_TAP"` lints the whole tap directory, including
+      # non-formula files (rubocop-md treats ```ruby fences in Markdown docs
+      # as real Ruby) — scope to the actual formula names instead.
+      - name: Run brew style on formulas only
+        run: |
+          formulas=$(basename -s .rb Formula/*.rb | sed "s#^#${HOMEBREW_TAP}/#")
+          brew style $formulas
