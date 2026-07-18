@@ -1,0 +1,16 @@
+name: Lint Formulas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    name: audit
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
+      - run: brew audit --strict Formula/*.rb
+      - run: brew style Formula/

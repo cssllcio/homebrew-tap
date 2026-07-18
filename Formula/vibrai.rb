@@ -2,6 +2,8 @@ class Vibrai < Formula
   desc "Vibrai CLI + MCP server for Ableton Live"
   homepage "https://vibrai.com"
   version "1.3.0"
+  # Proprietary, all rights reserved — Homebrew has no SPDX id for this,
+  # :cannot_represent is the documented correct value, not a placeholder.
   license :cannot_represent
 
   on_macos do
