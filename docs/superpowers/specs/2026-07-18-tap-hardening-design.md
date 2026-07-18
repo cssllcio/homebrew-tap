@@ -30,10 +30,10 @@ Out of scope: code signing/notarization of the release binaries themselves
   no `user.signingkey`) and none of the three repos require it yet.
 - An SSH key already exists at `~/.ssh/id_ed25519.pub` and can be reused as an
   SSH-based commit-signing key rather than generating a new GPG key.
-- `gh` is authenticated as `gitizenme` with `repo` and `workflow` scopes;
-  managing signing keys needs an additional `admin:ssh_signing_key` scope
-  (requires `gh auth refresh`) and branch protection needs the existing `repo`
-  scope (already sufficient).
+- `gh` is authenticated as `gitizenme` with `gist, project, read:org, repo,
+  workflow` scopes; managing signing keys needs an additional
+  `admin:ssh_signing_key` scope (requires `gh auth refresh`) and branch
+  protection needs the existing `repo` scope (already sufficient).
 - All three repos (`homebrew-tap`, `vibrai-releases`, `typeclip`) are public
   with default branch `main`.
 - `vibrai.rb` currently sets `license :cannot_represent`. This has been
@@ -62,23 +62,28 @@ immediately after enabling the requirement.
 ### 2. Branch protection (all three repos)
 
 Applied identically to `main` on `homebrew-tap`, `vibrai-releases`, and
-`typeclip`, via `gh api repos/{owner}/{repo}/rulesets` (repo rulesets, not the
-legacy branch-protection API, since rulesets compose more cleanly and support
-bypass actors):
+`typeclip`, via the classic branch-protection API
+(`gh api /repos/{owner}/{repo}/branches/main/protection`, plus its
+`required_signatures` sub-resource) — not the newer repository-rulesets API,
+because the classic API has an explicit `enforce_admins: false` field that
+cleanly expresses "owner bypasses," rather than needing to guess numeric
+ruleset bypass-actor role IDs for a personal (non-org) repo:
 
-- Require signed commits
+- Require signed commits (`required_signatures`)
 - Require linear history
 - Block force-pushes
 - Block branch deletion
-- Solo maintainer → no "require pull request review" rule (that would need a
-  second approving account); repo admin (the user) bypasses ruleset
-  enforcement by default when acting as owner, which is what allows self-merge
+- Solo maintainer → `enforce_admins: false` and no
+  `required_pull_request_reviews` (that would need a second approving
+  account); this is what lets the repo owner keep merging without a second
+  approver
 - `homebrew-tap` additionally requires the new CI status check (§3) to pass
-  before merge
+  before merge — added via a follow-up call once the check has run at least
+  once (GitHub will not let a never-run check be marked required)
 
-Each repo's ruleset is applied as its own confirmed `gh api` call — these are
-account-level settings changes and each one is confirmed with the user before
-running, per the earlier discussion.
+Each repo's protection update is applied as its own confirmed `gh api` call —
+these are account-level settings changes and each one is confirmed with the
+user before running, per the earlier discussion.
 
 ### 3. CI linting workflow (`homebrew-tap` only)
 
@@ -96,8 +101,14 @@ jobs:
       - run: brew style Formula/
 ```
 
+(Superseded during execution — `brew audit`/`brew style` reject bare path
+arguments on current Homebrew; the shipped workflow resolves the checkout as
+a registered tap by name instead, keeping the job/check name `audit`. See
+`docs/superpowers/plans/2026-07-18-tap-hardening.md` Task 5 and
+`.superpowers/sdd/progress.md` for the actual YAML and why.)
+
 This job's check name becomes the required status check added to
-`homebrew-tap`'s ruleset in §2. Landed via a PR (rather than a direct push to
+`homebrew-tap`'s branch protection in §2. Landed via a PR (rather than a direct push to
 `main`) so the new branch protection + CI combination is exercised end-to-end
 before being relied on.
 
@@ -121,8 +132,7 @@ Add a short section to `README.md`:
 ## Sequencing
 
 1. Commit signing setup (local + GitHub signing key upload)
-2. Branch protection rulesets on all three repos (now safe since signing
-   works)
+2. Branch protection on all three repos (now safe since signing works)
 3. CI workflow + license comment + README note, landed together as one PR to
    `homebrew-tap` (exercises the new required-check + signed-commit rules)
 

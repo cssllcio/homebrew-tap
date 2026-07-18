@@ -283,6 +283,12 @@ jobs:
       - run: brew style Formula/
 ```
 
+(Superseded during execution — see `.superpowers/sdd/progress.md` and
+`task-5-report.md`: current Homebrew rejects bare path args to `brew audit`,
+so the shipped workflow registers the checkout as a tap and invokes
+`brew audit`/`brew style` by tap name instead, keeping the job id/`name:`
+as `audit`.)
+
 - [ ] **Step 3: Add the license clarification comment**
 
 In `Formula/vibrai.rb`, change:
