@@ -1,0 +1,29 @@
+name: Lint Formulas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    name: audit
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
+      - name: Register this checkout as a tap
+        run: |
+          owner="${GITHUB_REPOSITORY%%/*}"
+          owner_lc=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          repo="${GITHUB_REPOSITORY##*/}"
+          tap_name="${repo#homebrew-}"
+          tap_dir="$(brew --repository)/Library/Taps/${owner_lc}/homebrew-${tap_name}"
+          mkdir -p "$(dirname "$tap_dir")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
+          echo "HOMEBREW_TAP=${owner_lc}/${tap_name}" >> "$GITHUB_ENV"
+      # brew audit/style resolve tap-relative exclusions (e.g. Formula files are
+      # exempt from Style/Documentation) only when given tap/formula names, not
+      # bare file paths — `brew audit [path ...]` is disabled upstream anyway.
+      - run: brew audit --strict --tap="$HOMEBREW_TAP"
+      - run: brew style "$HOMEBREW_TAP"
