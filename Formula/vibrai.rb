@@ -1,18 +1,17 @@
 class Vibrai < Formula
-  desc "CLI + MCP server for Ableton Live"
+  desc "Vibrai CLI + MCP server for Ableton Live"
   homepage "https://vibrai.com"
-  # Proprietary, all rights reserved — Homebrew has no SPDX id for this,
-  # :cannot_represent is the documented correct value, not a placeholder.
+  version "1.3.1"
   license :cannot_represent
 
   on_macos do
     on_arm do
-      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.3.0/vibrai-1.3.0-osx-arm64-cli.tar.gz"
-      sha256 "68f1ba53debe50cfa71fb828cb21e6ff38af6bb3d6832d007b7c1b3965fd8722"
+      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.3.1/vibrai-1.3.1-osx-arm64-cli.tar.gz"
+      sha256 "375179d65ad10311f212038d07d8457bafdc95b59b8fb388294d478b9e268308"
     end
     on_intel do
-      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.3.0/vibrai-1.3.0-osx-x64-cli.tar.gz"
-      sha256 "78052cc533b648925912d57276f8edd625a83765017a29dfd94262c80c17374d"
+      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.3.1/vibrai-1.3.1-osx-x64-cli.tar.gz"
+      sha256 "ddee46ead0450c26baa37f7473c18a14ebf3749a171743aba0d52aa40cacd685"
     end
   end
 
