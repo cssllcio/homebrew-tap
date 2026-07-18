@@ -12,3 +12,4 @@ class Typeclip < Formula
     assert_match version.to_s, shell_output("#{bin}/typeclip --version")
   end
 end
+  
