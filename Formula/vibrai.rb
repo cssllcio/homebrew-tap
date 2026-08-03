@@ -1,7 +1,6 @@
 class Vibrai < Formula
-  desc "Vibrai CLI + MCP server for Ableton Live"
+  desc "CLI + MCP server for Ableton Live"
   homepage "https://vibrai.com"
-  version "1.5.0"
   license :cannot_represent
 
   on_macos do
