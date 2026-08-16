@@ -5,12 +5,12 @@ class Vibrai < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.6.1/vibrai-1.6.1-osx-arm64-cli.tar.gz"
-      sha256 "6e90da81d495a27a304ccb743974c482946e469503c3e478c038529d7b4d9252"
+      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.6.2/vibrai-1.6.2-osx-arm64-cli.tar.gz"
+      sha256 "a7dfdecceacf02748b38c6c61f54f7517091efb8523479042457c1105f8c2c11"
     end
     on_intel do
-      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.6.1/vibrai-1.6.1-osx-x64-cli.tar.gz"
-      sha256 "bbf45a0f306beaa3a6efa09fa5a910a3bbaeb6bd801cc5a70376edf07795e889"
+      url "https://github.com/cssllcio/vibrai-releases/releases/download/v1.6.2/vibrai-1.6.2-osx-x64-cli.tar.gz"
+      sha256 "136ecb7e5a7fc8d5a4261699b035e65da0e5798302f189c210c686ad8f2cd04e"
     end
   end
 
@@ -30,6 +30,13 @@ class Vibrai < Formula
       This install is managed by Homebrew — use `brew upgrade vibrai` to
       update, not `vibrai update` (which refuses on a Homebrew-managed
       install).
+
+      If you previously used the standalone installer, remove it first:
+        vibrai uninstall
+      It symlinks into /usr/local/bin, which the default macOS PATH searches
+      BEFORE /opt/homebrew/bin — so `vibrai` would keep running the old copy
+      and `brew upgrade` would silently update one you never execute (#519).
+      `vibrai --version` warns when it detects this.
     CAVEATS
   end
 
