@@ -5,12 +5,12 @@ class Vibrai < Formula
 
   on_macos do
     on_arm do
-      url "https://downloads.vibrai.com/v1.6.6/vibrai-1.6.6-osx-arm64-cli.tar.gz"
-      sha256 "949eae0a3a14f91148a04f0f521672b3e615c1e75dd1b820105581016c737ddb"
+      url "https://downloads.vibrai.com/v1.7.0/vibrai-1.7.0-osx-arm64-cli.tar.gz"
+      sha256 "00e2ebcfef4602a446b656fe49a7302eebe7cf243acdc41e9cd2dc5fc4f2330d"
     end
     on_intel do
-      url "https://downloads.vibrai.com/v1.6.6/vibrai-1.6.6-osx-x64-cli.tar.gz"
-      sha256 "6c339007092bbf93cc827b29af75e0b8a07d2b0a631c8501039bfcf28075a4dc"
+      url "https://downloads.vibrai.com/v1.7.0/vibrai-1.7.0-osx-x64-cli.tar.gz"
+      sha256 "841cbb573c68717608501c3b90212a327662115bb08e47d0d697231d6016ad2c"
     end
   end
 
