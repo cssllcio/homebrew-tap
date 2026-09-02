@@ -1,7 +1,6 @@
 class Sonify < Formula
   desc "365 Strange Attractors sonification pipeline (emits .vibrai compositions)"
   homepage "https://github.com/cssllcio/sonify-releases"
-  version "0.1.0"
   license :cannot_represent
 
   on_macos do
